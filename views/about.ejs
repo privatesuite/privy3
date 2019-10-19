@@ -1,0 +1,58 @@
+<%
+
+	seo.title = "About Us";
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+
+	<% include include/menu.ejs %>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1>About</h1>
+
+			<%- (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "about")).fields.content %>
+
+			<h2>The Team</h2>
+
+			<div class="authors_cards" style="margin-top: 20px;">
+
+				<% for (const profile of await db.elements.findElements(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "profile")) { %>
+
+					<div>
+						
+						<img src="<%- profile.fields.image ? file(profile.fields.image) : default_image %>">
+
+						<div>
+
+							<span class="name"><%- profile.fields.title %></span>
+
+							<p><%- profile.fields.description || "<i>No description available at this time</i>" %></p>
+
+						</div>
+
+					</div>
+
+				<% } %>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<%- include include/footer.ejs %>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<%
+
+	seo.title = "Home";
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+	
+	<% include include/menu.ejs %>
+
+	<% var featured = await db.elements.findElement(_ => _.fields.title.toLowerCase() === "featured"); %>
+
+	<div class="app">
+
+		<div class="section split featured">
+			
+			<a href="<%- featured.fields.link %>" class="panel" style="background-image: url('<%- file(featured.fields.image) %>'); background-size: cover;">
+
+				
+
+			</a>
+
+			<div class="description">
+
+				<h1><%- featured.fields.featured_title %></h1>
+
+				<h3><%- featured.fields.subtitle %></h3>
+
+				<p><%- featured.fields.description %></p>
+				
+				<div class="hr"></div>
+
+				<a href="<%- featured.fields.link %>" class="right"><%- featured.fields.call_to_action %> &#187;</a>
+
+			</div>
+
+		</div>
+
+		<div class="section split">
+			
+			<div class="panel half">
+
+				<% var box1 = await db.elements.findElement(_ => _.fields.title.toLowerCase() === "homepage box 1"); %>
+
+				<h2><%- box1.fields.box_title %></h2>
+
+				<%- box1.fields.content %>
+
+				<a href="<%- box1.fields.link %>" class="right bottom"><%- box1.fields.call_to_action %> &#187;</a>
+
+			</div>
+
+			<div class="panel half">
+
+				<% var box2 = await db.elements.findElement(_ => _.fields.title.toLowerCase() === "homepage box 2"); %>
+
+				<h2><%- box2.fields.box_title %></h2>
+
+				<%- box2.fields.content %>
+
+				<a href="<%- box2.fields.link %>" class="right bottom"><%- box2.fields.call_to_action %> &#187;</a>
+
+			</div>
+
+		</div>
+
+		<!-- <div class="hr"></div>
+
+		<div class="section panel slideshow">
+			
+			<div>
+
+				<h1 class="middle">Slide One</h1>
+
+			</div>
+
+			<div class="current_slide">
+
+				<h1 class="middle">Slide Two</h1>
+
+			</div>
+
+			<div>
+
+				<h1 class="middle">Slide Three</h1>
+
+			</div>
+
+			<div class="dots hmiddle bottom">
+
+				<div></div>
+				<div class="selected"></div>
+				<div></div>
+
+			</div>
+		
+		</div> -->
+
+	</div>
+
+	<% include include/footer.ejs %>
+
+</body>
+</html>

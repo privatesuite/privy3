@@ -1,0 +1,111 @@
+<%
+
+	const post = db.elements.findElement(_ => _.fields.title.toLowerCase() === deslugify(params.post));
+	seo.title = post.fields.title;
+	seo.description = trim(removeHTMLTags(post.fields.content), 256);
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+
+	<% include include/menu.ejs %>
+
+	<% var tags = post.fields.category.split(",").map(_ => _.trim()) %>
+
+	<% var authors = post.fields.authors.split(",").map(_ => _.trim()) %>
+	<% var photographers = (post.fields.photographers || "").split(",").map(_ => _.trim()) %>
+
+	<div class="app">
+
+		<span class="breadcrum"><%- capitalize(post.fields.issue || "Unknown Issue") %> &#187; <%- capitalize(tags[0]) %> &#187; <%- post.fields.title %></span>
+
+		<div class="hr"></div>
+		
+		<div class="section">
+			
+			<a href="/section/<%- tags[0] %>"><h3 class="uppercase_text" style="margin-top: 25px;"><%- tags[0] %></h3></a>
+			<h1 class="regular_text" style="margin-top: 15px; margin-bottom: 5px;"><%- post.fields.title %></h1>
+			<h1 class="sub regular_text"><%- post.fields.subtitle || "" %></h1>
+
+			<div class="authors">
+
+				<div>
+
+					<span>Writers</span>
+					<div>
+
+						<% for (const author of authors) { %>
+
+							<span><%- author %></span>
+
+						<% } %>
+
+					</div>
+
+				</div>
+
+				<% if (photographers.length !== 0 && photographers[0]) { %>
+
+					<div>
+
+						<span>Photographers</span>
+						<div>
+		
+							<% for (const photographer of photographers) { %>
+		
+								<span><%- photographer %></span>
+		
+							<% } %>
+		
+						</div>
+		
+					</div>
+
+				<% } %>
+
+			</div>
+			
+			<%- post.fields.content %>
+
+			<div class="hr"></div>
+
+			<div class="authors_cards">
+
+				<% for (const author of authors) { %>
+
+					<% let profile = (db.elements.findElement(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "profile" && _.fields.title.toLowerCase() === author.toLowerCase())) || {fields: {}}; %>
+
+					<div>
+						
+						<img src="<%- profile.fields.image ? file(profile.fields.image) : default_image %>">
+
+						<div>
+
+							<span class="name"><%- author %></span>
+
+							<p><%- profile.fields.description || "<i>No description available at this time</i>" %></p>
+
+						</div>
+
+					</div>
+
+				<% } %>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<%- include include/footer.ejs %>
+
+</body>
+</html>

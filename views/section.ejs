@@ -1,0 +1,103 @@
+<%
+
+	seo.title = capitalize(params.section);
+	seo.description = `Articles labelled "${capitalize(params.section)}"`
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+
+	<% include include/menu.ejs %>
+
+	<% var posts = db.elements.findElements(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "post" && _.fields.category.split(", ").indexOf(params.section) !== -1); %>
+
+	<%
+
+		var issues = [];
+		var issue_posts = {};
+
+		for (const post of posts) {
+
+			if (!post.fields.issue) {
+
+				if (issues.indexOf(0) === -1) issues.push(0);
+				if (!issue_posts[0]) issue_posts[0] = [];
+
+				issue_posts[0].push(post);
+
+				continue;
+
+			}
+
+			var issue = parseInt(post.fields.issue.toLowerCase().replace("issue", "").trim());
+
+			if (issues.indexOf(issue) === -1) issues.push(issue);
+			if (!issue_posts[issue]) issue_posts[issue] = [];
+
+			issue_posts[issue].push(post);
+
+		}
+
+		issues = issues.sort((a, b) => a - b);
+
+	%>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1 class="regular_text"><%- capitalize(params.section) %></h1>
+
+		</div>
+
+		<!-- <div class="hr"></div> -->
+
+		<% for (const issue of issues) { %>
+
+			<div class="section">
+
+				<h3 class="sub regular_text"><%= issue === 0 ? "Unknown Issue" : `Issue ${issue}` %></h3>
+		
+				<div class="posts">
+
+					<% for (const post of issue_posts[issue]) { %>
+
+						<div>
+
+							<img src="<%- post.fields.image ? file(post.fields.image) : default_image %>" class="panel flexible">
+
+							<div>
+								
+								<h2 class="dark"><%- post.fields.title %></h2>
+								<h3><%- post.fields.subtitle %></h3>
+
+								<p><%- trim(removeHTMLTags(post.fields.content), 256) %></p>
+
+								<a href="/post/<%- slugify(post.fields.title) %>">READ NOW &raquo;</a>
+
+							</div>			
+		
+						</div>
+		
+					<% } %>
+
+				</div>
+
+			</div>
+
+		<% } %>
+
+	</div>
+
+	<% include include/footer.ejs %>
+
+</body>
+</html>

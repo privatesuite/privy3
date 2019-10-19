@@ -1,0 +1,37 @@
+<%
+
+	const issue = db.elements.findElement(_ => (_.fields.title || "").startsWith(`Issue ${params.issue}`));
+
+	seo.title = issue.fields.title;
+	//seo.description = "Delve into our issues and experience the magic of vaporwave!"
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+
+	<% include include/menu.ejs %>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1><%- issue.fields.title %></h1>
+
+			<%- issue.fields.content.replace("[PAGE]", params.page || "1") %>
+
+		</div>
+
+	</div>
+
+	<% include include/footer.ejs %>
+
+</body>
+</html>

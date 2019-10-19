@@ -1,0 +1,59 @@
+<%
+
+	seo.title = "Issues";
+	seo.description = "Delve into our issues and experience the magic of vaporwave!"
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
+
+</head>
+<body>
+
+	<% include include/menu.ejs %>
+
+	<%
+
+		function getIssueNumber (title) {return parseInt(title.match(/\d+/)[0]);}
+
+		const issues = (await db.elements.findElements(_ => _.fields.title.indexOf("Issue ") !== -1)).sort((b, a) => getIssueNumber(a.fields.title) - getIssueNumber(b.fields.title));;
+
+		let i = issues.length;
+
+	%>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1>Issues</h1>
+
+			<div class="issues">
+
+				<% for (const issue of issues) { %>
+
+					<a href="/issue/<%- i %>" class="panel">
+						
+						<h2><%- issue.fields.title %></h2>
+		
+					</a>
+		
+					<% i-- %>
+
+				<% } %>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<%- include include/footer.ejs %>
+
+</body>
+</html>
