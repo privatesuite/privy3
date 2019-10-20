@@ -1,4 +1,31 @@
-auto(["/manifest.json", "/css/(.*)", "/img/(.*)", "/js/(.*)"]);
+const https = require("https");
+
+let podcastCache = [];
+function getJSON (url) {
+
+	return new Promise(resolve => {
+
+		https.get(url, resp => {
+			
+			let data = "";
+
+			resp.on("data", chunk => data += chunk);
+			resp.on("end", () => resolve(JSON.parse(data)));
+
+		});
+
+	});
+
+}
+
+async function updatePodcastCache () {
+
+	console.log("Updating podcast page!");
+	podcastCache = (await getJSON("https://shows.pippa.io/api/shows/5d9c8ccb34dfd91e4010ff4f/episodes?results=1000")).results;
+
+}
+
+auto(["/robots.txt", "/manifest.json", "/css/(.*)", "/img/(.*)", "/js/(.*)"]);
 
 const utils = API_ROOT => ({
 
@@ -40,9 +67,23 @@ const utils = API_ROOT => ({
 			
 		return string.replace(/<\/?[^>]+(>|$)/g, "");
 
+	},
+
+	podcastEpisodes () {
+
+		return podcastCache;
+
 	}
 
 });
+
+setInterval(async () => {
+
+	await updatePodcastCache();
+
+}, 1000 * 60 * 2.5);
+
+(async () => await updatePodcastCache())();
 
 const standard = req => ({
 
@@ -67,14 +108,14 @@ const standard = req => ({
 
 error((req, res) => {
 
-	res.status(200);
+	res.status(500);
 	res.ejs("views/404.ejs", standard(req));
 
 });
 
 notFound((req, res) => {
 
-	res.status(200);
+	res.status(404);
 	res.ejs("views/404.ejs", standard(req));
 
 });
@@ -127,5 +168,40 @@ get("/issue/:issue/:page?", (req, res) => {
 
 	res.status(200);
 	res.ejs("views/issue.ejs", standard(req));
+
+});
+
+get("/podcast", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/podcast.ejs", standard(req));
+
+});
+
+get("/podcast/:episode", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/podcast_listen.ejs", standard(req));
+
+});
+
+get("/thanks", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/thanks.ejs", standard(req));
+
+});
+
+get("/contact", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/contact.ejs", standard(req));
+
+});
+
+get("/discover", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/discover.ejs", standard(req));
 
 });

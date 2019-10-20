@@ -1,46 +1,67 @@
-<%- await render("include/menu.ejs") %>
+<%
 
-<% const episode = await podcastEpisode(currentRoute().split("/")[2]); %>
+	const episode = podcastEpisodes().find(_ => ("" + _.episodeNumber) === params.episode);
 
-<div class="app">
+	seo.title = episode.title;
+	seo.image = episode.cover ? episode.cover.url : "https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg";
+	seo.description = trim(removeHTMLTags(episode.summary), 256);
 
-	<div class="section">
+%>
 
-		<h1><%- episode.title %></h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-		<div class="split" style="margin-top: 40px;">
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
 
-			<div>
+</head>
+<body>
 
-				<img src="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" alt="" class="podcast_cover">
+	<% include include/menu.ejs %>
 
-			</div>
+	<div class="app">
 
-			<div>
+		<div class="section">
 
-				<audio class="podcast_player" src="<%- episode.audio.url %>" controls></audio>
+			<h1><%- episode.title %></h1>
 
-				<br><br>
+			<div class="split" style="margin-top: 40px;">
 
 				<div>
 
-					<a href="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" class="btn" target="_blank" download><i data-feather="image"></i> <span>Download Thumbnail</span></a>
-					<a href="<%- episode.audio.url %>" class="btn" target="_blank" download><i data-feather="headphones"></i> <span>Download Audio</span></a>
+					<img src="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" alt="" class="podcast_cover">
 
 				</div>
 
-				<div class="podcast_description">
-					
-					<%- episode.summary %>
+				<div>
+
+					<audio class="podcast_player" src="<%- episode.audio.url %>" controls></audio>
+
+					<br><br>
+
+					<div>
+
+						<a href="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" class="btn" target="_blank" download><i data-feather="image"></i> <span>Download Thumbnail</span></a>
+						<a href="<%- episode.audio.url %>" class="btn" target="_blank" download><i data-feather="headphones"></i> <span>Download Audio</span></a>
+
+					</div>
+
+					<div class="podcast_description">
+						
+						<%- episode.summary %>
+
+					</div>
 
 				</div>
-
+			
 			</div>
-		
+
 		</div>
 
 	</div>
 
-</div>
+	<% include include/footer.ejs %>
 
-<%- await render("include/footer.ejs") %>
+</body>
+</html>

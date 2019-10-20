@@ -1,41 +1,146 @@
-<%- await render("include/menu.ejs") %>
+<%
 
-<div class="app">
+	seo.title = "Discover";
+	seo.description = "Find recent vaporwave with Discover! If you find something you like, feel free to write a review of the album you've found. If you message us on Discord, we might even include it in the next issue of Private Suite!"
 
-	<div class="section">
+%>
 
-		<h1>Discover</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-		<% if (!Spade) { %>
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
 
-		<h1>Spade only works when you're connected to the internet!</h1>
-		<h2>Sorry about that</h2>
+</head>
+<body>
 
-		<% } else { %>
+	<% include include/menu.ejs %>
 
-		<p>Discover is a powerful tool that uses Bandcamp's API to search for new releases. Discover is powered by an awesome library called Spade - developed by our very own aurame. Once Spade finds new releases, it'll display them here in an orderly fashion. The album title is displayed below the artwork. In gray text below this is the artist name, followed by the city, date, and time of upload. If you find an album that you really like, feel free to let us know on discord - maybe you can write a rapidfire review that will be featured in the next issue of the magazine or here on the site! Below you'll find the 100 most recent albums that are tagged "vaporwave." Enjoy!</p>
+	<div class="app">
 
-		<div class="discover_albums">
+		<div class="section">
 
-			<% for (const album of (await Spade.getRecentAlbums(100)).sort((a, b) => b.release_date - a.release_date)) { %>
+			<h1>Discover</h1>
 
-				<a href="<%- album.url %>" class="panel">
+			<p>Discover is a powerful tool that uses Bandcamp's API to search for new releases. Discover is powered by an awesome library called Spade - developed by our very own aurame. Once Spade finds new releases, it'll display them here in an orderly fashion. The album title is displayed below the artwork. In gray text below this is the artist name, followed by the city, date, and time of upload. If you find an album that you really like, feel free to let us know on Discord - maybe you can write a rapidfire review that will be featured in the next issue of the magazine or here on the site! Below you'll find the 250 most recent albums that are tagged "vaporwave." Enjoy!</p>
 
-					<img src="<%- album.album_cover(16) %>" alt="">
-					<h2><%- album.title %></h2>
-					<h3><%- album.artist %><%- album.location !== 'Unknown' ? ` &bull; ${album.location}` : '' %></h3>
-					<h3><%- album.release_date.toLocaleString() %></h3>
+			<div class="discover_albums">
 
-				</a>
-	
-			<% } %>
+				<h2>Loading...</h2>
+
+			</div>
 
 		</div>
 
-		<% } %>
-
 	</div>
 
-</div>
+	<script>
+	
+		(async () => {
 
-<%- await render("include/footer.ejs") %>
+			function capitalizeFirstLetter (string) {
+
+				return string.charAt(0).toUpperCase() + string.slice(1);
+
+			}
+
+			proxy = "https://cors-anywhere.herokuapp.com/";
+
+			async function getRecentAlbums (albums, location = 0, genre = "electronic", subgenre = "vaporwave") {
+
+				let p = [];
+				let _ = [];
+				let page = 0;
+
+				function convert (_) {
+
+					return {
+
+						title: _.primary_text,
+
+						url: `https://${_.url_hints.subdomain}.${"bandcamp.com"}/album/${_.url_hints.slug}`,
+						genre: capitalizeFirstLetter(_.genre_text),
+						artist: _.secondary_text,
+						location: _.location_text || "Unknown",
+						release_date: new Date(_.publish_date),
+
+						featured_track: _.featured_track,
+
+						album_cover: size => `https://f4.bcbits.com/img/${_.type}${_.art_id}_${size}.jpg`,
+						bio_image: size => `https://f4.bcbits.com/img/${_.bio_image.id}_${size}.jpg`,
+
+					}
+
+				}
+
+				async function getPage (page) {
+
+					return await (await fetch(proxy + `https://bandcamp.com/api/discover/3/get_web?g=${genre}&s=new&p=${page}&gn=${location}&f=all&t=${subgenre}&lo=true&lo_action_url=https%3A%2F%2Fbandcamp.com`)).json();
+
+				}
+
+				while (page !== Math.ceil(albums / 48)) {
+
+					// let p = getPage(page);
+					// if (p.items.length === 0) return _;
+					// _.push(...(p).items.map(convert));
+					// page++;
+					_.push(getPage(page));
+					page++;
+
+				}
+
+				_ = await Promise.all(_);
+
+				for (const __ of _) {
+					
+					p = [...p, ...__.items];
+
+				}
+
+				p = p.map(_ => convert(_)).slice(0, albums);
+
+				return p;
+				
+			}
+
+			const albums = (await getRecentAlbums(250)).sort((a, b) => b.release_date - a.release_date);
+
+			document.querySelector(".discover_albums *").remove();
+
+			for (const album of albums) {
+
+				const a = document.createElement("a");
+
+				a.href = album.url;
+				a.classList.add("panel");
+
+				const img = document.createElement("img");
+				img.src = album.album_cover(16);
+				a.appendChild(img);
+
+				const title = document.createElement("h2");
+				title.innerText = album.title;
+				a.appendChild(title);
+
+				const sub = document.createElement("h3");
+				sub.innerText = `${album.artist} • ${album.location}`;
+				a.appendChild(sub);
+
+				const sub2 = document.createElement("h3");
+				sub2.innerText = album.release_date.toLocaleString();
+				a.appendChild(sub2);
+
+				document.querySelector(".discover_albums").appendChild(a);
+
+			}
+
+		})();
+
+	</script>
+
+	<% include include/footer.ejs %>
+
+</body>
+</html>

@@ -1,59 +1,78 @@
-<%- await render("include/menu.ejs") %>
+<%
 
-<div class="app">
+	seo.title = "Podcast";
 
-	<div class="section">
+%>
 
-		<div class="split" style="margin-bottom: 20px;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
-			<div style="margin-bottom: 0px;">
+	<% include include/seo/standard.ejs %>
+	<% include include/head.ejs %>
 
-				<h1>Podcast</h1> <br>
+</head>
+<body>
+		
+	<% include include/menu.ejs %>
 
-				<%- (await fetchElement("podcast")).content %>
+	<div class="app">
 
-			</div>
+		<div class="section">
 
-			<div>
+			<div class="split" style="margin-bottom: 20px;">
 
-				<h2 style="margin-top: 20px;">Listen to us everywhere!</h2>
+				<div style="margin-bottom: 0px;">
 
-				<div class="social_buttons">
+					<h1>Podcast</h1> <br>
 
-					<a href="https://feed.pippa.io/public/shows/5d9c8ccb34dfd91e4010ff4f" class="btn"><i data-feather="rss"></i> <span>RSS Feed</span></a>
-					<a href="https://itunes.apple.com/us/podcast/private-suite-podcast/id1442031477?mt=2" class="btn"><i data-feather="headphones"></i> <span>Apple Podcasts</span></a>
-					<a href="https://playmusic.app.goo.gl/?ibi=com.google.PlayMusic&isi=691797987&ius=googleplaymusic&apn=com.google.android.music&link=https://play.google.com/music/m/Iph5wtkaugzehoxtw4v7epkiyqy?t%3DPrivate_Suite_Podcast%26pcampaignid%3DMKT-na-all-co-pr-mu-pod-16" class="btn"><i data-feather="headphones"></i> <span>Google Play</span></a>
-					<a href="https://pca.st/5a8t" class="btn"><i data-feather="headphones"></i> <span>Pocket Casts</span></a>
-					<a href="https://open.spotify.com/show/3O73BZdzhDV1wuaTihnkOc?si=NEKSX8-uTha84gXS6oCuBA" class="btn"><i data-feather="headphones"></i> <span>Spotify</span></a>
-					<a href="https://www.stitcher.com/s?fid=329291&refid=stpr" class="btn"><i data-feather="headphones"></i> <span>Stitcher</span></a>
-					<a href="http://tun.in/pjfpM" class="btn"><i data-feather="headphones"></i> <span>TuneIn</span></a>
-					<a href="https://www.iheart.com/podcast/256-Private-Suite-Podcast-31157632" class="btn"><i data-feather="headphones"></i> <span>iHeart</span></a>
-					<a href="https://player.fm/series/private-suite-podcast" class="btn"><i data-feather="headphones"></i> <span>PlayerFM</span></a>
+					<%- (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "podcast")).fields.content %>
 
 				</div>
-					
+
+				<div>
+
+					<h2 style="margin-top: 20px;">Listen to us everywhere!</h2>
+
+					<div class="social_buttons">
+
+						<a href="https://feed.pippa.io/public/shows/5d9c8ccb34dfd91e4010ff4f" class="btn"><i data-feather="rss"></i> <span>RSS Feed</span></a>
+						<a href="https://itunes.apple.com/us/podcast/private-suite-podcast/id1442031477?mt=2" class="btn"><i data-feather="headphones"></i> <span>Apple Podcasts</span></a>
+						<a href="https://playmusic.app.goo.gl/?ibi=com.google.PlayMusic&isi=691797987&ius=googleplaymusic&apn=com.google.android.music&link=https://play.google.com/music/m/Iph5wtkaugzehoxtw4v7epkiyqy?t%3DPrivate_Suite_Podcast%26pcampaignid%3DMKT-na-all-co-pr-mu-pod-16" class="btn"><i data-feather="headphones"></i> <span>Google Play</span></a>
+						<a href="https://pca.st/5a8t" class="btn"><i data-feather="headphones"></i> <span>Pocket Casts</span></a>
+						<a href="https://open.spotify.com/show/3O73BZdzhDV1wuaTihnkOc?si=NEKSX8-uTha84gXS6oCuBA" class="btn"><i data-feather="headphones"></i> <span>Spotify</span></a>
+						<a href="https://www.stitcher.com/s?fid=329291&refid=stpr" class="btn"><i data-feather="headphones"></i> <span>Stitcher</span></a>
+						<a href="http://tun.in/pjfpM" class="btn"><i data-feather="headphones"></i> <span>TuneIn</span></a>
+						<a href="https://www.iheart.com/podcast/256-Private-Suite-Podcast-31157632" class="btn"><i data-feather="headphones"></i> <span>iHeart</span></a>
+						<a href="https://player.fm/series/private-suite-podcast" class="btn"><i data-feather="headphones"></i> <span>PlayerFM</span></a>
+
+					</div>
+						
+				</div>
+			
 			</div>
+
+			<div class="episodes">
+
+				<% for (const episode of podcastEpisodes()) { %>
+
+					<a href="/podcast/<%- episode.episodeNumber %>" class="panel">
+
+						<img src="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" alt="">
+						<h2><%- episode.title %></h2>
+						<div class="subtitle"><%= episode.subtitle || `${episode.summary.replace(/<\/?\w+>/g, '').slice(0, 200)}...` %></div>
+
+					</a>
 		
-		</div>
+				<% } %>
 
-		<div class="episodes">
-
-			<% for (const episode of (await podcastEpisodes())) { %>
-
-				<a href="/podcast/<%- episode.episodeNumber %>" class="panel">
-
-					<img src="<%- episode.cover ? episode.cover.url : 'https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg' %>" alt="">
-					<h2><%- episode.title %></h2>
-					<div class="subtitle"><%= episode.subtitle || `${episode.summary.replace(/<\/?\w+>/g, '').slice(0, 200)}...` %></div>
-
-				</a>
-	
-			<% } %>
+			</div>
 
 		</div>
 
 	</div>
 
-</div>
+	<% include include/footer.ejs %>
 
-<%- await render("include/footer.ejs") %>
+</body>
+</html>

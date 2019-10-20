@@ -79,6 +79,8 @@
 								<h2 class="dark"><%- post.fields.title %></h2>
 								<h3><%- post.fields.subtitle %></h3>
 
+								<p><%- post.fields.authors %></p>
+
 								<p><%- trim(removeHTMLTags(post.fields.content), 256) %></p>
 
 								<a href="/post/<%- slugify(post.fields.title) %>">READ NOW &raquo;</a>
