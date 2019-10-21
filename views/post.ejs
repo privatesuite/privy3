@@ -1,6 +1,6 @@
 <%
 
-	const post = db.elements.findElement(_ => _.fields.title.toLowerCase() === deslugify(params.post));
+	const post = db.elements.accessible().find(_ => _.fields.title.toLowerCase() === deslugify(params.post));
 	seo.title = post.fields.title;
 	seo.description = trim(removeHTMLTags(post.fields.content), 256);
 

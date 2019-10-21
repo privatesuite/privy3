@@ -24,7 +24,7 @@
 
 			<div class="sections">
 
-				<% for (section of new Set((await db.elements.findElements(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "post")).filter(_ => !!_.fields.category).map(_ => _.fields.category.split(",")[0]))) { %>
+				<% for (section of new Set(posts.all().filter(_ => !!_.fields.category).map(_ => _.fields.category.split(",")[0]))) { %>
 
 					<a href="/section/<%- slugify(section) %>" class="panel">
 

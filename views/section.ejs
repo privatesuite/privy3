@@ -17,14 +17,12 @@
 
 	<% include include/menu.ejs %>
 
-	<% var posts = db.elements.findElements(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "post" && _.fields.category.split(", ").indexOf(params.section) !== -1); %>
-
 	<%
 
 		var issues = [];
 		var issue_posts = {};
 
-		for (const post of posts) {
+		for (const post of posts.section(params.section)) {
 
 			if (!post.fields.issue) {
 

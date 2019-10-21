@@ -69,9 +69,29 @@ const utils = API_ROOT => ({
 
 	},
 
-	podcastEpisodes () {
+	podcast: {
 
-		return podcastCache;
+		episodes () {
+
+			return podcastCache;
+	
+		}	
+
+	},
+
+	posts: {
+
+		all () {
+
+			return db.elements.accessible().filter(_ => db.templates.templateNameFromId(_.template).toLowerCase() === "post");
+
+		},
+
+		section (section) {
+
+			return this.all().filter(_ => _.fields.category.split(", ").indexOf(section) !== -1);
+
+		}
 
 	}
 
