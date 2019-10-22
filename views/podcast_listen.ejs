@@ -1,6 +1,6 @@
 <%
 
-	const episode = podcastEpisodes().find(_ => ("" + _.episodeNumber) === params.episode);
+	const episode = podcast.episodes().find(_ => ("" + _.episodeNumber) === params.episode);
 
 	seo.title = episode.title;
 	seo.image = episode.cover ? episode.cover.url : "https://assets.pippa.io/shows/5d9c8ccb34dfd91e4010ff4f/1571005170261-23211066444275543f08416dce14831b.jpeg";
