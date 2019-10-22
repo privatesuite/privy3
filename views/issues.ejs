@@ -21,7 +21,7 @@
 
 		function getIssueNumber (title) {return parseInt(title.match(/\d+/)[0]);}
 
-		const issues = (await db.elements.findElements(_ => _.fields.title.indexOf("Issue ") !== -1)).sort((b, a) => getIssueNumber(a.fields.title) - getIssueNumber(b.fields.title));;
+		const issues = (await db.elements.findElements(_ => _.fields.title && _.fields.title.indexOf("Issue ") !== -1)).sort((b, a) => getIssueNumber(a.fields.title) - getIssueNumber(b.fields.title));;
 
 		let i = issues.length;
 
