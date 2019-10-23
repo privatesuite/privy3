@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const https = require("https");
 
 let podcastCache = [];
@@ -10,7 +12,11 @@ function getJSON (url) {
 			let data = "";
 
 			resp.on("data", chunk => data += chunk);
-			resp.on("end", () => resolve(JSON.parse(data)));
+			resp.on("end", () => {
+				
+				try {resolve(JSON.parse(data));} catch {resolve(data)};
+				
+			});
 
 		});
 
@@ -21,7 +27,14 @@ function getJSON (url) {
 async function updatePodcastCache () {
 
 	console.log("Updating podcast page!");
-	podcastCache = (await getJSON("https://shows.pippa.io/api/shows/5d9c8ccb34dfd91e4010ff4f/episodes?results=1000")).results;
+	const json = await getJSON("https://shows.pippa.io/api/shows/5d9c8ccb34dfd91e4010ff4f/episodes?results=1000");
+	
+	if (typeof json !== "object") {
+
+		fs.writeFileSync(path.join(__dirname, "invalid.json"), json.toString());
+		console.log("Podcast fetching JSON error; see invalid.json");
+
+	} else podcastCache = json.results;
 
 }
 
