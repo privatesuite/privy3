@@ -2,7 +2,7 @@
 
 	const podcastInfo = (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "podcast"));
 	seo.title = "Podcast";
-	seo.description = podcastInfo.fields.content;
+	seo.description = trim(removeHTMLTags(podcastInfo.fields.content));
 
 %>
 
