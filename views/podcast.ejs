@@ -1,6 +1,8 @@
 <%
 
+	const podcastInfo = (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "podcast"));
 	seo.title = "Podcast";
+	seo.description = podcastInfo.fields.content;
 
 %>
 
@@ -26,7 +28,7 @@
 
 					<h1>Podcast</h1> <br>
 
-					<%- (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "podcast")).fields.content %>
+					<%- podcastInfo.fields.content %>
 
 				</div>
 
