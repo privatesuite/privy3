@@ -104,6 +104,12 @@ const utils = API_ROOT => ({
 
 			return this.all().filter(_ => _.fields.category.split(", ").indexOf(section) !== -1);
 
+		},
+
+		issueLink (issue) {
+
+			return issue ? (issue.toLowerCase().startsWith("issue") ? `/issue/${parseInt(issue.toLowerCase().replace("issue", '').trim())}` : "#") : "#";
+
 		}
 
 	}

@@ -25,13 +25,13 @@
 
 	<div class="app">
 
-		<span class="breadcrum"><%- capitalize(post.fields.issue || "Unknown Issue") %> &#187; <%- capitalize(tags[0]) %> &#187; <%- post.fields.title %></span>
+		<span class="breadcrum"><a href="/section/<%- tags[0] %>" style="color: inherit; font-style: normal;"><%- capitalize(tags[0]) %></a> &#187; <%- post.fields.title %></span>
 
 		<div class="hr"></div>
 		
 		<div class="section">
 			
-			<a href="/section/<%- tags[0] %>"><h3 class="uppercase_text" style="margin-top: 25px;"><%- tags[0] %></h3></a>
+			<span><a href="/section/<%- tags[0] %>"><h3 class="uppercase_text" style="margin-top: 25px;"><%- tags[0] %></h3></a> <a href="<%- posts.issueLink(post.fields.issue) %>"><i>in <%- post.fields.issue || "Unknown Issue" %></i></a></span>
 			<h1 class="regular_text" style="margin-top: 15px; margin-bottom: 5px;"><%- post.fields.title %></h1>
 			<h1 class="sub regular_text"><%- post.fields.subtitle || "" %></h1>
 
