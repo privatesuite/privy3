@@ -139,7 +139,7 @@ const standard = req => ({
 
 // Error Handlers
 
-error((req, res) => {
+error((req, res, err) => {
 
 	res.status(500);
 	res.ejs("views/404.ejs", standard(req));
