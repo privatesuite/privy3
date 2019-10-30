@@ -60,13 +60,13 @@
 
 			<div class="panel half">
 
-				<% var box2 = await db.elements.findElement(_ => _.fields.title.toLowerCase() === "homepage box 2"); %>
+				<% const latest_podcast = podcast.episodes()[0]; %>
 
-				<h2><%- box2.fields.box_title %></h2>
+				<h2><%- latest_podcast.episodeNumber %>. <%- latest_podcast.title %></h2>
 
-				<%- box2.fields.content %>
+				<p><%= latest_podcast.subtitle || `${latest_podcast.summary.replace(/<\/?\w+>/g, '').slice(0, 200)}...` %></p>
 
-				<a href="<%- box2.fields.link %>" class="right bottom"><%- box2.fields.call_to_action %> &#187;</a>
+				<a href="/podcast/<%- latest_podcast.episodeNumber %>" class="right bottom">Listen Now &#187;</a>
 
 			</div>
 
