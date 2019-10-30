@@ -64,9 +64,9 @@
 
 				<h2><%- latest_podcast.episodeNumber %>. <%- latest_podcast.title %></h2>
 
-				<p><%= latest_podcast.subtitle || `${latest_podcast.summary.replace(/<\/?\w+>/g, '').slice(0, 300)}...` %></p>
+				<p><%= latest_podcast.subtitle || `${latest_podcast.summary.replace(/<\/?\w+>/g, '').slice(0, 400)}...` %></p>
 
-				<a href="/podcast/<%- latest_podcast.episodeNumber %>" class="right bottom">Listen Now &#187;</a>
+				<a href="/podcast/<%- latest_podcast.episodeNumber %>" class="right bottom">LISTEN NOW &#187;</a>
 
 			</div>
 
