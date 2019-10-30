@@ -244,3 +244,10 @@ get("/discover", (req, res) => {
 	res.ejs("views/discover.ejs", standard(req));
 
 });
+
+get("/privacy", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/privacy.ejs", standard(req));
+
+});
