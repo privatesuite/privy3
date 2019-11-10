@@ -3,6 +3,7 @@
 	const post = db.elements.accessible().find(_ => _.fields.title.toLowerCase() === deslugify(params.post));
 	seo.title = post.fields.title;
 	seo.description = trim(removeHTMLTags(post.fields.content), 256);
+	if (post.fields.image) seo.image = file(post.fields.image);
 
 %>
 
