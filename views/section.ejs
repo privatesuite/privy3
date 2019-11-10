@@ -41,7 +41,7 @@
 						<h2 class="dark"><%- post.fields.title %></h2>
 						<h3><%- post.fields.subtitle %></h3>
 
-						<p><strong><%- post.fields.authors %> &mdash; <a href="<%- posts.issueLink(post.fields.issue) %>"><%- post.fields.issue || "Unknown Issue" %></a></strong><br><%- trim(removeHTMLTags(post.fields.content), 256) %></p>
+						<p><strong><%- post.fields.authors %> &mdash; <a href="<%- posts.issueLink(post.fields.issue) %>"><%- post.fields.issue.split("/")[0] || "Unknown Issue" %></a></strong><br><%- trim(removeHTMLTags(post.fields.content), 256) %></p>
 
 						<a href="/post/<%- slugify(post.fields.title) %>">READ NOW &raquo;</a>
 

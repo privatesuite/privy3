@@ -108,7 +108,7 @@ const utils = API_ROOT => ({
 
 		issueLink (issue) {
 
-			return issue ? (issue.toLowerCase().startsWith("issue") ? `/issue/${parseInt(issue.toLowerCase().replace("issue", '').trim())}` : "#") : "#";
+			return issue ? (issue.toLowerCase().startsWith("issue") ? `/issue/${parseInt(issue.split("/")[0].toLowerCase().replace("issue", '').trim())}${issue.split("/")[1] ? `/${issue.split("/")[1]}` : ""}` : "#") : "#";
 
 		}
 
