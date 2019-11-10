@@ -659,13 +659,35 @@ footer {
 
 .post_body {
 
-	img {
+	.centered {
 
 		display: block;
 		
 		margin: auto;
 		
 		max-height: 250px;
+
+	}
+
+	.centered_items {
+
+		display: flex;
+
+		margin-top: 25px;
+		margin-bottom: 25px;
+
+		// justify-content: center;
+		// flex-grow: 1;
+		align-items: center;
+		justify-content: space-evenly;
+
+		&>* {
+
+			// margin-left: 10px;
+			flex-basis: 50%;
+			object-fit: contain;
+
+		}
 
 	}
 

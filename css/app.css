@@ -372,10 +372,21 @@ footer > .social > *:hover {
     display: none;
   }
 }
-.post_body img {
+.post_body .centered {
   display: block;
   margin: auto;
   max-height: 250px;
+}
+.post_body .centered_items {
+  display: flex;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.post_body .centered_items > * {
+  flex-basis: 50%;
+  object-fit: contain;
 }
 * {
   outline: none !important;
