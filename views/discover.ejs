@@ -25,6 +25,20 @@
 
 			<p>Discover is a powerful tool that uses Bandcamp's API to search for new releases. Discover is powered by an awesome library called Spade - developed by our very own aurame. Once Spade finds new releases, it'll display them here in an orderly fashion. The album title is displayed below the artwork. In gray text below this is the artist name, followed by the city, date, and time of upload. If you find an album that you really like, feel free to let us know on Discord - maybe you can write a rapidfire review that will be featured in the next issue of the magazine or here on the site! Below you'll find the 250 most recent albums that are tagged "vaporwave." Enjoy!</p>
 
+			<datalist id="location_datalist">
+
+				<!-- <option value="a"></option> -->
+
+			</datalist>
+
+			<div>
+
+				<h3>Find by...</h3>
+				<br>
+				<input id="location" type="text" list="location_datalist" placeholder="Location">
+
+			</div>
+
 			<div class="discover_albums">
 
 				<h2>Loading...</h2>
@@ -45,9 +59,18 @@
 
 			}
 
-			proxy = "https://cors-anywhere.herokuapp.com/";
+			const proxy = "https://cors-anywhere.herokuapp.com/";
+			let sort = "new";
+			let recent;
+			let location;
 
-			async function getRecentAlbums (albums, location = 0, genre = "electronic", subgenre = "vaporwave") {
+			async function getLocations (location, count) {
+
+				return (await (await fetch(proxy + `https://bandcamp.com/api/location/1/geoname_search?q=${location}&n=${count}`)).json()).results;
+
+			}
+
+			async function getRecentAlbums (albums, sort = "new", location = 0, genre = "electronic", subgenre = "vaporwave") {
 
 				let p = [];
 				let _ = [];
@@ -76,16 +99,12 @@
 
 				async function getPage (page) {
 
-					return await (await fetch(proxy + `https://bandcamp.com/api/discover/3/get_web?g=${genre}&s=new&p=${page}&gn=${location}&f=all&t=${subgenre}&lo=true&lo_action_url=https%3A%2F%2Fbandcamp.com`)).json();
+					return await (await fetch(proxy + `https://bandcamp.com/api/discover/3/get_web?g=${genre}&s=${sort}&p=${page}&gn=${location}&f=all&t=${subgenre}&lo=true&lo_action_url=https%3A%2F%2Fbandcamp.com`)).json();
 
 				}
 
 				while (page !== Math.ceil(albums / 48)) {
 
-					// let p = getPage(page);
-					// if (p.items.length === 0) return _;
-					// _.push(...(p).items.map(convert));
-					// page++;
 					_.push(getPage(page));
 					page++;
 
@@ -105,36 +124,83 @@
 				
 			}
 
-			const albums = (await getRecentAlbums(250)).sort((a, b) => b.release_date - a.release_date);
+			function renderAlbums (albums) {
 
-			document.querySelector(".discover_albums *").remove();
+				document.querySelector(".discover_albums").innerHTML = "";
 
-			for (const album of albums) {
+				for (const album of albums) {
 
-				const a = document.createElement("a");
+					const a = document.createElement("a");
 
-				a.href = album.url;
-				a.classList.add("panel");
+					a.href = album.url;
+					a.classList.add("panel");
 
-				const img = document.createElement("img");
-				img.src = album.album_cover(16);
-				a.appendChild(img);
+					const img = document.createElement("img");
+					img.src = album.album_cover(16);
+					a.appendChild(img);
 
-				const title = document.createElement("h2");
-				title.innerText = album.title;
-				a.appendChild(title);
+					const title = document.createElement("h2");
+					title.innerText = album.title;
+					a.appendChild(title);
 
-				const sub = document.createElement("h3");
-				sub.innerText = `${album.artist} • ${album.location}`;
-				a.appendChild(sub);
+					const sub = document.createElement("h3");
+					sub.innerText = `${album.artist} • ${album.location}`;
+					a.appendChild(sub);
 
-				const sub2 = document.createElement("h3");
-				sub2.innerText = album.release_date.toLocaleString();
-				a.appendChild(sub2);
+					const sub2 = document.createElement("h3");
+					sub2.innerText = album.release_date.toLocaleString();
+					a.appendChild(sub2);
 
-				document.querySelector(".discover_albums").appendChild(a);
+					document.querySelector(".discover_albums").appendChild(a);
+
+				}
 
 			}
+
+			async function refresh () {
+
+				return renderAlbums((await getRecentAlbums(250, sort, location)).sort((a, b) => b.release_date - a.release_date));
+
+			}
+
+			recent = (await getRecentAlbums(250, sort)).sort((a, b) => b.release_date - a.release_date);
+			renderAlbums(recent);
+
+			document.getElementById("location").addEventListener("input", async () => {
+
+				const value = document.getElementById("location").value.trim();
+
+				if (value.length) {
+
+					const locations = await getLocations(value, 3);
+
+					if (!locations.length || locations.length === 1) {
+
+						location = [...document.getElementById("location").list.options].find(_ => _.value === value).innerText;
+						refresh();
+
+					}
+
+					document.getElementById("location_datalist").innerHTML = "";
+
+					for (const loc of locations) {
+						
+						const loco = document.createElement("option");
+						loco.value = loc.fullname;
+						loco.innerHTML = loc.id;
+						document.getElementById("location_datalist").appendChild(loco);						
+
+					}
+
+				} else {
+				
+					location = "0";
+					renderAlbums(recent);
+					document.getElementById("location_datalist").innerHTML = "";
+
+				}
+
+			});
 
 		})();
 

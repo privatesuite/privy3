@@ -253,8 +253,10 @@ footer > .social > *:hover {
   margin-right: 40px;
   padding: 0;
   vertical-align: middle;
-  width: 200px;
-  height: 200px;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 200px;
 }
 .posts > * > div {
   position: relative;

@@ -28,7 +28,13 @@
 		<span class="breadcrum"><a href="/section/<%- tags[0] %>" style="color: inherit; font-style: normal;"><%- capitalize(tags[0]) %></a> &#187; <%- post.fields.title %></span>
 
 		<div class="hr"></div>
+
+		<% if (post.fields.image) { %>
 		
+			<img src="<%- file(post.fields.image) %>" style="display: block; margin: auto;">
+
+		<% } %>
+
 		<div class="section">
 			
 			<span><a href="/section/<%- tags[0] %>"><h3 class="uppercase_text" style="margin-top: 25px;"><%- tags[0] %></h3></a> <a href="<%- posts.issueLink(post.fields.issue) %>"><i>in <%- post.fields.issue || "Unknown Issue" %></i></a></span>
