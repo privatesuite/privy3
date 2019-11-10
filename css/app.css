@@ -372,6 +372,11 @@ footer > .social > *:hover {
     display: none;
   }
 }
+.post_body img {
+  display: block;
+  margin: auto;
+  max-height: 250px;
+}
 * {
   outline: none !important;
 }
