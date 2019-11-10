@@ -387,6 +387,7 @@ footer > .social > *:hover {
 .post_body .centered_items > * {
   flex-basis: 50%;
   object-fit: contain;
+  max-height: 250px;
 }
 * {
   outline: none !important;
