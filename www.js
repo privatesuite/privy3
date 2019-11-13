@@ -147,6 +147,7 @@ const standard = req => ({
 
 error((req, res, err) => {
 
+	console.error(err);
 	res.status(500);
 	res.ejs("views/404.ejs", standard(req));
 
@@ -249,5 +250,28 @@ get("/privacy", (req, res) => {
 
 	res.status(200);
 	res.ejs("views/privacy.ejs", standard(req));
+
+});
+
+get("/calendar", (req, res) => {
+
+	if (req.cookies.calendar_email === "test@email.com") {
+
+		res.status(200);
+		res.ejs("views/calendar/calendar.ejs", standard(req));
+
+	} else {
+
+		res.status(200);
+		res.ejs("views/calendar/welcome.ejs", standard(req));
+
+	}
+
+});
+
+post("/calendar", (req, res) => {
+
+	res.cookie("calendar_email", req.body.email);
+	res.redirect("/calendar");
 
 });

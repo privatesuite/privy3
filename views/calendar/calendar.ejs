@@ -1,0 +1,96 @@
+<%
+
+	seo.title = "Advent Calendar";
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include ../include/seo/standard.ejs %>
+	<% include ../include/head.ejs %>
+
+	<style>
+	
+		.calendar {
+
+			display: flex;
+
+			flex-wrap: wrap;
+
+		}
+
+		.calendar>* {
+
+			display: inline-block;
+
+			margin-top: 20px;
+			margin-left: 10px;
+			margin-right: 10px;
+
+			flex-grow: 1;
+			flex-basis: 200px;
+
+			min-height: 100px !important;
+			max-height: 250px;
+
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<% include ../include/menu.ejs %>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1>Advent Calendar</h1>
+
+			<p>New codes will be released daily.</p>
+
+			<div class="calendar">
+
+				<% for (let i = 0; i < 25; i++) { %>
+
+					<div class="panel">
+
+						<h1><%- i + 1 %></h1>
+
+						<% if (i < 12) { %>
+
+							<p style="font-size: 18pt;">
+							
+								<strong>Code</strong><br>
+								<code><%- Math.random().toString(36).replace("0.", "").slice(0,3) %>-<%- Math.random().toString(36).replace("0.", "").slice(0,3) %>-<%- Math.random().toString(36).replace("0.", "").slice(0,3) %></code>
+						
+							</p>
+						
+						<% } else { %>
+
+							<p style="font-size: 18pt;">
+							
+								<strong>Dropping In</strong><br>
+								<code><%- ((86400000 * i) / 86400000).toFixed(1) %> days</code>
+						
+							</p>
+
+						<% } %>
+
+					</div>
+
+				<% } %>
+
+			</div>
+			
+		</div>
+
+	</div>
+
+	<%- include ../include/footer.ejs %>
+
+</body>
+</html>

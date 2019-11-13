@@ -1,0 +1,42 @@
+<%
+
+	seo.title = "Advent Calendar";
+
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<% include ../include/seo/standard.ejs %>
+	<% include ../include/head.ejs %>
+
+</head>
+<body>
+
+	<% include ../include/menu.ejs %>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1>Advent Calendar</h1>
+
+			<p>Enter the email you use for your Private Suite Patreon subscription to access this year's gifts.</p>
+
+			<form action="" method="POST">
+
+				<input name="email" type="text" type="email" class="input" placeholder="Email">
+
+				<input type="submit" value="Enter">
+
+			</form>
+		
+		</div>
+
+	</div>
+
+	<%- include ../include/footer.ejs %>
+
+</body>
+</html>
