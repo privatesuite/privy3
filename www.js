@@ -66,6 +66,9 @@ const utils = API_ROOT => ({
 
 	},
 
+	/**
+	 * @deprecated
+	 */
 	trim (text, max) {
 
 		if (text.length > max) {
