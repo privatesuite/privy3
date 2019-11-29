@@ -78,7 +78,7 @@ const utils = API_ROOT => ({
 
 	removeHTMLTags (string) {
 			
-		return string.replace(/<\/?[^>]+(>|$)/g, "");
+		return string.replace(/<\/?[^>]+(>|$)/g, " ").replace(/\s\s+/g, " ");
 
 	},
 

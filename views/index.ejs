@@ -64,7 +64,7 @@
 
 				<h2><%- latest_podcast.episodeNumber %>. <%- latest_podcast.title %></h2>
 
-				<p><%= latest_podcast.subtitle || `${latest_podcast.summary.replace(/<\/?.+?>/g, '').slice(0, 400)}...` %></p>
+				<p><%= latest_podcast.subtitle || `${removeHTMLTags(latest_podcast.summary).slice(0, 400)}...` %></p>
 
 				<a href="/podcast/<%- latest_podcast.episodeNumber %>" class="right bottom">LISTEN NOW &#187;</a>
 
