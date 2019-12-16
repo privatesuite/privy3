@@ -1,0 +1,56 @@
+// Service Worker
+//
+// This file allows `privatesuitemag.com` to be viewed offline until a better connection is available
+//
+
+const CACHE_NAME = "privatesuite-cache-v3";
+var urlsToCache = [
+
+	"/",
+	"/about",
+	"/sections",
+	"/issues",
+	"/podcast",
+	"/contact",
+	"/discover",
+
+	"/css/app.css",
+	"/img/logo_wordmark_blk.svg",
+	"/img/social/twitter.svg",
+	"/img/social/youtube.svg",
+	"/img/social/discord.svg",
+	"/js/feather.min.js",
+	"/manifest.json",
+	"/img/favicon.png",	
+
+<% for (section of new Set(posts.all().filter(_ => !!_.fields.category).map(_ => _.fields.category.split(",")[0]))) { %><%- `\t"/section/${slugify(section)}",\n` %><% } %>
+
+]
+
+self.addEventListener("install", event => {
+
+	event.waitUntil(caches.open(CACHE_NAME).then(cache => {
+	
+		console.log("Opened cache");
+    	return cache.addAll(urlsToCache);
+	
+	}));
+
+});
+
+self.addEventListener("fetch", event => {
+
+	if (navigator.onLine || event.request.url.indexOf("/admin") !== -1 || (event.request.url.indexOf("/api/") !== -1 && event.request.url.indexOf("/api/elements") === -1)) {
+
+		console.log(`Cancelling request "${event.request.url}"`);
+		return false;
+
+	}
+
+	event.respondWith(caches.match(event.request).then(response => {
+
+		return response;
+	
+	}));
+
+});

@@ -150,7 +150,6 @@ const standard = req => ({
 
 error((req, res, err) => {
 
-	console.error(err);
 	res.status(500);
 	res.ejs("views/404.ejs", standard(req));
 
@@ -169,6 +168,14 @@ get("/", (req, res) => {
 
 	res.status(200);
 	res.ejs("views/index.ejs", standard(req));
+
+});
+
+get("/sw.js", (req, res) => {
+
+	res.status(200);
+	res.ejs("sw.ejs", standard(req));
+	res.type("js");
 
 });
 

@@ -49,5 +49,20 @@
 	feather.replace();
 	document.getElementById("stoploadissues").remove();
 
+	if ("serviceWorker" in navigator) {
+		
+		navigator.serviceWorker.register(location.origin + "/sw.js").then(registration => {
+			
+			console.log(`Service worker registration successful with scope "${registration.scope}"`);
+			
+		}, err => {
+		
+			console.error(`Service worker registration failed with error ${err}`);
+		
+		});
+	
+	}
+
+
 </script>
 
