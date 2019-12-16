@@ -5,6 +5,7 @@
 
 	const directors = profiles.filter(_ => _.fields.role === "director");
 	const execs = profiles.filter(_ => _.fields.role === "exec").sort((a, b) => a.fields.title.localeCompare(b.fields.title));
+	const leads = profiles.filter(_ => _.fields.role === "lead").sort((a, b) => a.fields.title.localeCompare(b.fields.title));
 	const staff = profiles.filter(_ => !_.fields.role).sort((a, b) => a.fields.title.localeCompare(b.fields.title));
 	const contributors = profiles.filter(_ => _.fields.role === "contributor").sort((a, b) => a.fields.title.localeCompare(b.fields.title));
 
@@ -59,6 +60,30 @@
 			<div class="authors_cards" style="margin-top: 20px;">
 
 				<% for (const profile of execs) { %>
+
+					<div>
+						
+						<img src="<%- profile.fields.image ? file(profile.fields.image) : default_image %>">
+
+						<div>
+
+							<span class="name"><%- profile.fields.title %></span>
+
+							<p><%- profile.fields.description || "<i>No description available at this time</i>" %></p>
+
+						</div>
+
+					</div>
+
+				<% } %>
+
+			</div>
+
+			<h2>Leads</h2>
+
+			<div class="authors_cards" style="margin-top: 20px;">
+
+				<% for (const profile of leads) { %>
 
 					<div>
 						
