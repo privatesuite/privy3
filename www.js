@@ -131,6 +131,7 @@ const standard = req => ({
 
 	...utils(`https://${req.hostname}/api`),
 
+	query: req.query,
 	params: req.params,
 
 	default_image: "https://icon2.kisspng.com/20180411/ksq/kisspng-vaporwave-statue-aesthetics-seapunk-art-statue-of-liberty-5acdd5c454c0c2.4795892315234390443472.jpg",
