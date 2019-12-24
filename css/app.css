@@ -389,6 +389,22 @@ footer > .social > *:hover {
   object-fit: contain;
   max-height: 250px;
 }
+.christmas {
+  display: flex;
+  flex-wrap: wrap;
+}
+.christmas > * {
+  display: inline-block;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  flex-grow: 1;
+  flex-basis: 400px;
+  min-height: auto !important;
+  color: #787878;
+  font-style: normal;
+  overflow-wrap: break-word;
+}
 * {
   outline: none !important;
 }

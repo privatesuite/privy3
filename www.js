@@ -285,3 +285,10 @@ post("/calendar", (req, res) => {
 	res.redirect("/calendar");
 
 });
+
+get("/christmas", (req, res) => {
+
+	res.status(200);
+	res.ejs("views/christmas.ejs", standard(req));
+
+});

@@ -694,3 +694,31 @@ footer {
 	}
 
 }
+
+.christmas {
+
+	display: flex;
+
+	flex-wrap: wrap;
+
+	&>* {
+
+		display: inline-block;
+
+		margin-top: 20px;
+		margin-left: 10px;
+		margin-right: 10px;
+
+		flex-grow: 1;
+		flex-basis: 400px;
+
+		min-height: auto !important;
+
+		color: @gray;
+		font-style: normal;
+
+		overflow-wrap: break-word;
+
+	}
+
+}

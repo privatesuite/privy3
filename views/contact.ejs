@@ -23,7 +23,7 @@
 
 			<h1>Contact</h1>
 
-			<%- (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "contact")).fields.content %>
+			<%- (await db.elements.findElement(_ => _.fields.title && _.fields.title.toLowerCase() === "contact")).fields.content %>
 
 		</div>
 

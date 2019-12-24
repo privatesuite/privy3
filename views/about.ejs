@@ -29,7 +29,7 @@
 
 			<h1>About</h1>
 
-			<%- (await db.elements.findElement(_ => _.fields.title.toLowerCase() === "about")).fields.content %>
+			<%- (await db.elements.findElement(_ => _.fields.title && _.fields.title.toLowerCase() === "about")).fields.content %>
 
 			<h2>Director</h2>
 
