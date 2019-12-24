@@ -37,7 +37,7 @@
 
 			<%- (await db.elements.findElement(_ => _.fields.title && _.fields.title.toLowerCase() === "christmas")).fields.content %>
 
-			<p>Note: This may take a little while to load! Sorry about that!</p>
+			<p>You can navigate this Christmas Selection using the buttons above and below the albums and tracks, or by using the left and right arrow keys.</p>
 
 			<% if (page() > 1) { %>
 
@@ -90,6 +90,26 @@
 		</div>
 
 	</div>
+
+	<script>
+	
+		document.addEventListener("keydown", event => {
+
+			<% if (page() > 1) { %>
+
+				if (event.key === "ArrowLeft") location.replace("?page=<%- page() - 1 %>");
+
+			<% } %>
+
+			<% if (page() < 7) { %>
+
+				if (event.key === "ArrowRight") location.replace("?page=<%- page() + 1 %>");
+
+			<% } %>
+
+		});
+
+	</script>
 
 	<% include include/footer.ejs %>
 
