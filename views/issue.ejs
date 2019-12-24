@@ -15,7 +15,7 @@
 	}
 
 	if (issueId) seo.image = `https://${(await getReader(issueId)).pages[page() - 1].imageUri}`;
-	//seo.description = "Delve into our issues and experience the magic of vaporwave!"
+	if (removeHTMLTags(issue.fields.content).trim()) seo.description = removeHTMLTags(issue.fields.content).trim();
 
 %>
 
