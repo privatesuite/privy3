@@ -1,20 +1,54 @@
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 const https = require("https");
 
+let readerCache = {};
 let podcastCache = [];
 function getJSON (url) {
 
 	return new Promise(resolve => {
 
-		https.get(url, resp => {
+		https.get(url, {
+
+			gzip: true
+
+		}, resp => {
 			
 			let data = "";
 
 			resp.on("data", chunk => data += chunk);
 			resp.on("end", () => {
 				
-				try {resolve(JSON.parse(data));} catch {resolve(data)};
+				try {resolve(JSON.parse(data));} catch {resolve(data);};
+				
+			});
+
+		});
+
+	});
+
+}
+
+function getGzippedJSON (url) {
+
+	return new Promise(resolve => {
+
+		https.get(url, {
+
+			gzip: true
+
+		}, resp => {
+			
+			let data = "";
+
+			var gunzip = zlib.createGunzip();
+			resp.pipe(gunzip);
+
+			gunzip.on("data", chunk => data += chunk);
+			gunzip.on("end", () => {
+				
+				try {resolve(JSON.parse(data));} catch {resolve(data);};
 				
 			});
 
@@ -35,6 +69,18 @@ async function updatePodcastCache () {
 		console.log("Podcast fetching JSON error; see invalid.json");
 
 	} else podcastCache = json.results;
+
+}
+
+async function getReader (id) {
+
+	if (!readerCache[id]) {
+
+		readerCache[id] = await getGzippedJSON(`https://reader3.isu.pub/privatesuitemag/${id}/reader3_4.json`);
+		
+	}
+
+	return readerCache[id].document;
 
 }
 
@@ -84,6 +130,8 @@ const utils = API_ROOT => ({
 		return string.replace(/<\/?[^>]+(>|$)/g, " ").replace(/\s\s+/g, " ");
 
 	},
+
+	getReader,
 
 	podcast: {
 

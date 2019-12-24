@@ -2,7 +2,19 @@
 
 	const issue = db.elements.findElement(_ => (_.fields.title || "").startsWith(`Issue ${params.issue}`));
 
+	let issueId = issue.fields.content.indexOf("embed.html?d=") === -1 ? undefined : issue.fields.content.slice(issue.fields.content.indexOf("embed.html?d=") + 13, issue.fields.content.indexOf("&amp;u="));
+
 	seo.title = issue.fields.title;
+
+	function page () {
+
+		if (!params.page) return 1;
+		else if (!params.page.trim() || isNaN(params.page)) return 1;
+		else return parseInt(params.page);
+
+	}
+
+	if (issueId) seo.image = `https://${(await getReader(issueId)).pages[page() - 1].imageUri}`;
 	//seo.description = "Delve into our issues and experience the magic of vaporwave!"
 
 %>
