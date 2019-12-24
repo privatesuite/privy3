@@ -29,6 +29,8 @@
 
 	<% include include/menu.ejs %>
 
+	<% if (page() > 0 && page() <= 7) { %>
+
 	<div class="app">
 
 		<div class="section">
@@ -110,6 +112,22 @@
 		});
 
 	</script>
+
+	<% } else { %>
+
+	<div class="app">
+
+		<div class="section">
+
+			<h1>Trying to break our website?</h1>
+
+			<p>We love open-source code and whitehat hacking - so go ahead and <a href="https://github.com/privatesuite/privy3">check out our website code</a>! If you find a bug or security issue, feel free to message <code>aurame</code> on our Discord.</p>
+
+		</div>
+		
+	</div>
+
+	<% } %>
 
 	<% include include/footer.ejs %>
 
