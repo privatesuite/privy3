@@ -61,7 +61,7 @@ function getGzippedJSON (url) {
 async function updatePodcastCache () {
 
 	console.log("Updating podcast page!");
-	const json = await getJSON("https://shows.pippa.io/api/shows/5d9c8ccb34dfd91e4010ff4f/episodes?results=1000");
+	const json = await getJSON("https://shows.acast.com/api/shows/5d9c8ccb34dfd91e4010ff4f/episodes?results=1000");
 	
 	if (typeof json !== "object") {
 
