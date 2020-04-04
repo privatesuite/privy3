@@ -189,7 +189,7 @@ const standard = req => ({
 		url: `https://${req.hostname}${req.url}`,
 		title: "Private Suite Magazine",
 		image: "https://privatesuitemag.com/img/favicon.png",
-		description: "Private Suite is a vaporwave digital and print magazine."
+		description: "Private Suite, the vaporwave digital and print magazine."
 
 	}
 
