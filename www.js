@@ -341,3 +341,10 @@ get("/christmas", (req, res) => {
 	res.ejs("views/christmas.ejs", standard(req));
 
 });
+
+get("/events", (req, res) => {
+
+    res.status(200);
+    res.ejs("views/events.ejs", standard(req));
+
+});
