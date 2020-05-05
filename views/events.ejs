@@ -1,34 +1,39 @@
 <%
-
 	seo.title = "events";
-
+  const events = (await db.elements.findElements(_ => _.fields.type && _.fields.type.toLowerCase() === "event-dont_edit_me"))
 %>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <% include include/seo/standard.ejs %>
+    <% include include/head.ejs %>
+  </head>
+  <body>
+    <%- include include/menu.ejs %>
+    <div class="app">
+      <div class="section">
+        <h1>Vaporwave Livestreaming Events!</h1>
+        <p>Use this page to track upcoming and past livestreaming vaporwave events, as well as find links to the streams.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
 
-	<% include include/seo/standard.ejs %>
-	<% include include/head.ejs %>
+        <% for ( const event of events ) { %>
 
-</head>
-<body>
-		
-	<%- include include/menu.ejs %>
+          <div style="flex-basis: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+            <h1><%- event.fields.title %></h1>
+            <h2><%- event.fields.date %></h2>
+            <a href="<%- event.fields.site %>">
+              <h3><%- event.fields.site %></h3>
+            </a>
+            <p><%- event.fields.description %></p>
+            <img src="/api/file/<%- event.fields.image %>" style="width: 75%; max-width: 950px;"/>
+          </div>
 
-<div class="app">
+        <% } %>
 
-		<div class="section">
-
-			<h1>Vaporwave Livestreaming Events!</h1>
-
-			<p>Use this page to track upcoming and past livestreaming vaporwave events, as well as find links to the streams.</p>
-
-		</div>
-
-	</div>
-
-	<% include include/footer.ejs %>
-
-</body>
+      </div>
+    </div>
+    <% include include/footer.ejs %>
+  </body>
 </html>
