@@ -28,6 +28,9 @@
             </a>
             <p><%- event.fields.description %></p>
             <img src="/api/file/<%- event.fields.image %>" style="width: 75%; max-width: 950px;"/>
+            <% if ( event.fields.vod != "" ) { %>
+              <iframe src="<%- event.fields.vod %>" height="300" parent="https://privatesuitemag.com/" allowfullscreen="true"></iframe>
+            <% } %>
           </div>
 
         <% } %>
