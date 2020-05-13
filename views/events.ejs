@@ -31,7 +31,10 @@
             </div>
           <% } %>
         <% } %>
-        <h2>Previous streams</h2>
+      </div>
+      <hr/>
+      <h1>Previous streams</h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
         <% for ( const event of events ) { %>
           <% if ( event.fields.vod ) { %>
             <div style="flex-basis: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
@@ -42,8 +45,8 @@
               </a>
               <p><%- event.fields.description %></p>
               <img src="/api/file/<%- event.fields.image %>" style="width: 50%; max-width: 550px;"/>
-              <br/>
-              <iframe src="<%- event.fields.vod %>" height="300" width="450" parent="https://privatesuitemag.com/" allowfullscreen="true"></iframe>
+              <br/><br/>
+              <iframe style="margin: 1em 0;" src="<%- event.fields.vod %>" height="300" width="450" parent="https://privatesuitemag.com/" allowfullscreen="true"></iframe>
             </div>
           <% } %>
         <% } %>
