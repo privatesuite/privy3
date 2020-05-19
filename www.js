@@ -61,7 +61,7 @@ function getGzippedJSON (url) {
 async function updatePodcastCache () {
 
 	console.log("Updating podcast page!");
-	const json = await getJSON("https://feeds.captivate.fm/private-suite-podcast/?results=1000");
+	const json = await getJSON("https://feeds.captivate.fm/private-suite-podcast/");
 	
 	if (typeof json !== "object") {
 
