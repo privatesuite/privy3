@@ -1,7 +1,7 @@
 <%
 	seo.title = "events";
   const events = (await db.elements.findElements(_ => _.fields.type && _.fields.type.toLowerCase() === "event-dont_edit_me")).sort((x, y) => { 
-    x.fields.unixTimestamp - y.fields.unixTimestamp
+    return x.fields.unixTimestamp - y.fields.unixTimestamp
   })
 %>
 
@@ -56,8 +56,6 @@
 
       </div>
     </div>
-    <script>console.log(JSON.parse("<%-events%>"))</script>
-    <script>console.log("<%-events%>")</script>
     <% include include/footer.ejs %>
   </body>
 </html>
