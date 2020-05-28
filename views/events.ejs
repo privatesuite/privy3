@@ -2,7 +2,7 @@
 	seo.title = "events";
   const events = (await db.elements.findElements(_ => _.fields.type && _.fields.type.toLowerCase() === "event-dont_edit_me")).sort((x, y) => { 
     return x.fields.unixTimestamp - y.fields.unixTimestamp
-  })
+  }).reverse()
 %>
 
 <!DOCTYPE html>
