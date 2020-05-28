@@ -24,7 +24,7 @@
           <% if ( !event.fields.vod ) { %>
             <div style="flex-basis: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
               <h1><%- event.fields.title %></h1>
-              <h2><%- event.fields.date %></h2>
+              <h2 id="<%- event.fields.unixTimestamp %>"><%- event.fields.date %></h2>
               <a href="<%- event.fields.site %>">
                 <h3><%- event.fields.site %></h3>
               </a>
