@@ -1,6 +1,9 @@
 <%
 	seo.title = "events";
-  const events = (await db.elements.findElements(_ => _.fields.type && _.fields.type.toLowerCase() === "event-dont_edit_me"))
+  const events = (await db.elements.findElements(_ => _.fields.type && _.fields.type.toLowerCase() === "event-dont_edit_me")).sort((x, y) => { 
+    x.fields.unixTimestamp - y.fields.unixTimestamp
+  })
+  console.log(events)
 %>
 
 <!DOCTYPE html>
@@ -17,7 +20,6 @@
         <p>A one-stop-stop for scheduled vaporwave event listings and VODs for past vaporwave livestreams!</p>
       </div>
       <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
-
         <% for ( const event of events ) { %>
           <% if ( !event.fields.vod ) { %>
             <div style="flex-basis: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
