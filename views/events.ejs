@@ -56,7 +56,8 @@
 
       </div>
     </div>
-    <script><%-console.log(events)%></script>
+    <script>console.log(JSON.parse("<%-events%>"))</script>
+    <script>console.log("<%-events%>")</script>
     <% include include/footer.ejs %>
   </body>
 </html>
